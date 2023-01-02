@@ -1,0 +1,28 @@
+pipeline {
+    agent {label 'docker'} 
+    triggers {
+        pollSCM('* * * * *')
+    }
+    stages {
+        stage('clone') {
+            steps {
+                git url : 'https://github.com/DevProjectsForDevOps/StudentCoursesRestAPI' , branch : 'master'
+            }
+        }
+        stage('image') {
+            steps {
+                sh """docker image build -t mp:1.0 .
+                      docker image tag mp:1.0 manipavan/mp:1.0
+                      docker image push manipavan/mp:1.0
+                   """
+            }
+        }
+        stage('deploy') {
+            steps {
+                sh """docker container run -d -P manipavan/mp:1.0
+                     docker container ls
+                   """
+            }
+        }
+    }
+}
