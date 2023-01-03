@@ -8,7 +8,7 @@ pipeline{
         }
         stage('image'){
             steps{
-               sh """docker image build -t nop:1.0
+               sh """docker image build -t nop:1.0 .
                      docker image tag nop:1.0 manipavan/nop:1.0
                      docker image push manipavan/nop:1.0
                   """    
