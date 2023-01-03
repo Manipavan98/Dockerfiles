@@ -1,4 +1,4 @@
-FROM ubuntu:22.04 as unzip
+FROM ubuntu:22.04 as build
 RUN mkdir /Nop
 RUN apt update && \
     apt install wget unzip -y && \
@@ -10,7 +10,7 @@ RUN apt update && \
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 LABEL author="Manipavan"
-COPY  --from=unzip /Nop /Nop
+COPY  --from=build /Nop /Nop
 WORKDIR /Nop
 EXPOSE 80
 CMD ["dotnet","/Nop/Nop.Web.dll"]
